@@ -1,6 +1,11 @@
+language: node_js
+node_js:
+  - 12
+
+services:
+  - docker
+
 import:
   -udagram-api-feed/.travis.yaml
   -udagram-api-user/.travis.yaml
   -udagram-frontend/.travis.yaml
-
-language: node_js
