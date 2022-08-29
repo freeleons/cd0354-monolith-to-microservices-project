@@ -1,3 +1,3 @@
 .PHONY: test
 test:
-    echo "Skipping tests."
+    @echo "Skipping tests."
