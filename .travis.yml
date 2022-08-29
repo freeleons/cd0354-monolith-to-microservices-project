@@ -5,6 +5,9 @@ node_js:
 services:
   - docker
 
+git:
+  depth: 3
+
 import:
   - udagram-api-feed/.travis.yaml
   - udagram-api-user/.travis.yaml
