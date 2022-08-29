@@ -6,6 +6,6 @@ services:
   - docker
 
 import:
-  -udagram-api-feed/.travis.yaml
-  -udagram-api-user/.travis.yaml
-  -udagram-frontend/.travis.yaml
+  - udagram-api-feed/.travis.yaml
+  - udagram-api-user/.travis.yaml
+  - udagram-frontend/.travis.yaml
