@@ -4,7 +4,7 @@ node_js:
 
 services:
   - docker
-
+script: 'true'
 import:
   -udagram-api-feed/.travis.yaml
   -udagram-api-user/.travis.yaml
