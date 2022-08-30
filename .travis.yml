@@ -8,7 +8,7 @@ services:
 script:
   - docker --version # print the version for logging
   - docker build -t udagram-api-feed ./udagram-api-feed/.
-  - docker tag udagram-api-user freeleons/udagram-api-feed
+  - docker tag udagram-api-feed freeleons/udagram-api-feed
 
   - docker --version # print the version for logging
   - docker build -t udagram-api-user ./udagram-api-user/.
@@ -18,6 +18,13 @@ script:
   - docker build -t udagram-frontend ./udagram-frontend/.
   - docker tag udagram-frontend freeleons/udagram-frontend
 
+  - docker --version # print the version for logging
+  - docker build -t udagram-reverseproxy ./udagram-reverseproxy/.
+  - docker tag udagram-reverseproxy freeleons/udagram-reverseproxy
+
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push -a
+  - docker push freeleons/udagram-api-feed
+  - docker push freeleons/udagram-api-user
+  - docker push freeleons/udagram-frontend
+  - docker push freeleons/udagram-reverseproxy
 
