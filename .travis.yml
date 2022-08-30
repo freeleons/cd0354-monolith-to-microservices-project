@@ -5,7 +5,19 @@ node_js:
 services:
   - docker
 
-import:
-  - ./udagram-api-feed/.travis.yaml
-  - ./udagram-api-user/.travis.yaml
-  - ./udagram-frontend/.travis.yaml
+script:
+  - docker --version # print the version for logging
+  - docker build -t ./udagram-api-feed .
+  - docker tag udagram-api-user freeleons/udagram-api-feed:latest
+
+  - docker --version # print the version for logging
+  - docker build -t ./udagram-api-user .
+  - docker tag udagram-api-user freeleons/udagram-api-user:latest
+
+  - docker --version # print the version for logging
+  - docker build -t ./udagram-frontend .
+  - docker tag udagram-frontend freeleons/udagram-frontend:latest
+
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push -a
