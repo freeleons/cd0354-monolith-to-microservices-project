@@ -16,12 +16,14 @@ spec:
     spec:
       containers:
       - name: udagram-frontend
-        image: freeleons/udagram-frontend
+        image: freeleons/udagram-frontend:latest
         ports:
-        - containerPort: 8080
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 3
-          periodSeconds: 3
+        - containerPort: 80
+      envFrom:
+        - configMapRef:
+            name: env-configmap
+        - secretRef:
+            name: env-secret
+        - secretRef:
+            name: aws-secret
+
