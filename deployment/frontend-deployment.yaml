@@ -36,12 +36,12 @@ spec:
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
-                  name: env-config
+                  name: env-configmap
                   key: POSTGRES_DB
             - name: POSTGRES_HOST
               valueFrom:
                 secretKeyRef:
-                  name: env-secret
+                  name: env-configmap
                   key: POSTGRES_HOST
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -56,29 +56,25 @@ spec:
             - name: AWS_BUCKET
               valueFrom:
                 secretKeyRef:
-                  name: env-secret
+                  name: env-configmap
                   key: AWS_BUCKET
             - name: AWS_REGION
               valueFrom:
                 secretKeyRef:
-                  name: env-secret
+                  name: env-configmap
                   key: AWS_REGION
             - name: AWS_PROFILE
               valueFrom:
                 secretKeyRef:
-                  name: env-secret
+                  name: env-configmap
                   key: AWS_PROFILE
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: env-secret
+                  name: env-configmap
                   key: JWT_SECRET
             - name: URL
               valueFrom:
                 configMapKeyRef:
-                  name: env-config
+                  name: env-configmap
                   key: URL
-      volumes:
-        - name: aws-secret
-          secret:
-            secretName: aws-secret
