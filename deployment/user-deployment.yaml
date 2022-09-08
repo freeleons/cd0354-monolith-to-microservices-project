@@ -20,7 +20,7 @@ spec:
           image: freeleons/udagram-api-user:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 8081
+            - containerPort: 8080
           resources:
             requests:
               memory: "64Mi"
