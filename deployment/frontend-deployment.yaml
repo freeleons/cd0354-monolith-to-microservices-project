@@ -14,16 +14,71 @@ spec:
       labels:
         app: udagram-frontend
     spec:
+      restartPolicy: Always
       containers:
-      - name: udagram-frontend
-        image: freeleons/udagram-frontend:latest
-        ports:
-        - containerPort: 80
-      envFrom:
-        - configMapRef:
-            name: env-configmap
-        - secretRef:
-            name: env-secret
-        - secretRef:
-            name: aws-secret
-
+        - name: udagram-api-frontend
+          image: freeleons/udagram-api-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: aws-secret
+              mountPath: "/root/.aws/"
+              readOnly: true
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: env-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: POSTGRES_USERNAME
+            - name: AWS_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: AWS_BUCKET
+            - name: AWS_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: AWS_REGION
+            - name: AWS_PROFILE
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: AWS_PROFILE
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: env-secret
+                  key: JWT_SECRET
+            - name: URL
+              valueFrom:
+                configMapKeyRef:
+                  name: env-config
+                  key: URL
+      volumes:
+        - name: aws-secret
+          secret:
+            secretName: aws-secret
