@@ -20,13 +20,6 @@ spec:
             - containerPort: 8080
           name: udagram-api-feed
           imagePullPolicy: Always
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "250m"
-            limits:
-              memory: "1024Mi"
-              cpu: "500m"
           env:
             - name: URL
               valueFrom:
