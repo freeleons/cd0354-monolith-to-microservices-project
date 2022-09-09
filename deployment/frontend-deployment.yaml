@@ -1,26 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: udagram-frontend
   labels:
-    app: udagram-frontend
+    service: udagram-frontend
+  name: udagram-frontend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: udagram-frontend
+      service: udagram-frontend
   template:
     metadata:
       labels:
-        app: udagram-frontend
+        service: udagram-frontend
     spec:
-      restartPolicy: Always
       containers:
-        - name: udagram-api-frontend
-          image: freeleons/udagram-api-frontend:latest
+        - image: freeleons/udagram-frontend:latest
+          name: udagram-frontend
           imagePullPolicy: Always
-          ports:
-            - containerPort: 80
           resources:
             requests:
               memory: "64Mi"
@@ -28,57 +25,59 @@ spec:
             limits:
               memory: "1024Mi"
               cpu: "500m"
+          ports:
+            - containerPort: 80
+          env:
+            - name: URL
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: URL
+            - name: AWS_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: AWS_BUCKET
+            - name: AWS_PROFILE
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: AWS_PROFILE
+            - name: AWS_REGION
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: AWS_REGION
+            - name: JWT_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: JWT_SECRET
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: POSTGRES_DB
+            - name: POSTGRES_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: env-configmap
+                  key: POSTGRES_HOST
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: env-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: env-secret
+                  key: POSTGRES_USERNAME
           volumeMounts:
             - name: aws-secret
               mountPath: "/root/.aws/"
               readOnly: true
-          env:
-            env:
-              - name: POSTGRES_DB
-                valueFrom:
-                  configMapKeyRef:
-                    name: env-configmap
-                    key: POSTGRES_DB
-              - name: POSTGRES_HOST
-                valueFrom:
-                  configMapKeyRef:
-                    name: env-configmap
-                    key: POSTGRES_HOST
-              - name: POSTGRES_PASSWORD
-                valueFrom:
-                  secretKeyRef:
-                    name: env-secret
-                    key: POSTGRES_PASSWORD
-              - name: POSTGRES_USERNAME
-                valueFrom:
-                  secretKeyRef:
-                    name: env-secret
-                    key: POSTGRES_USERNAME
-              - name: AWS_BUCKET
-                valueFrom:
-                  configMapKeyRef:
-                    name: env-configmap
-                    key: AWS_BUCKET
-              - name: AWS_REGION
-                valueFrom:
-                  configMapKeyRef:
-                    name: env-configmap
-                    key: AWS_REGION
-              - name: AWS_PROFILE
-                valueFrom:
-                  configMapKeyRef:
-                    name: env-configmap
-                    key: AWS_PROFILE
-              - name: JWT_SECRET
-                valueFrom:
-                  configMapKeyRef:
-                    name: env-configmap
-                    key: JWT_SECRET
-              - name: URL
-                valueFrom:
-                  configMapKeyRef:
-                    name: env-configmap
-                    key: URL
+      restartPolicy: Always
       volumes:
         - name: aws-secret
           secret:
