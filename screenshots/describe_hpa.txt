@@ -5,20 +5,21 @@ Annotations:                                           <none>
 CreationTimestamp:                                     Fri, 09 Sep 2022 10:18:42 -0400
 Reference:                                             Deployment/udagram-api-feed
 Metrics:                                               ( current / target )
-  resource cpu on pods  (as a percentage of request):  <unknown> / 70%
+  resource cpu on pods  (as a percentage of request):  171% (427m) / 70%
 Min replicas:                                          3
 Max replicas:                                          5
-Deployment pods:                                       3 current / 3 desired
+Deployment pods:                                       5 current / 5 desired
 Conditions:
-  Type           Status  Reason                   Message
-  ----           ------  ------                   -------
-  AbleToScale    True    SucceededGetScale        the HPA controller was able to get the target's current scale
-  ScalingActive  False   FailedGetResourceMetric  the HPA was unable to compute the replica count: failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API: the server could not find the requested resource (get pods.metrics.k8s.io)
+  Type            Status  Reason               Message
+  ----            ------  ------               -------
+  AbleToScale     True    ScaleDownStabilized  recent recommendations were higher than current one, applying the highest recent recommendation
+  ScalingActive   True    ValidMetricFound     the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  True    TooManyReplicas      the desired replica count is more than the maximum replica count
 Events:
-  Type     Reason                   Age                      From                       Message
-  ----     ------                   ----                     ----                       -------
-  Warning  FailedGetScale           13m (x21 over 3h12m)     horizontal-pod-autoscaler  deployments/scale.apps "udagram-api-feed" not found
-  Warning  FailedGetResourceMetric  3m6s (x1011 over 4h22m)  horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API: the server could not find the requested resource (get pods.metrics.k8s.io)
+  Type     Reason                   Age                       From                       Message
+  ----     ------                   ----                      ----                       -------
+  Warning  FailedGetResourceMetric  5m40s (x1601 over 6h46m)  horizontal-pod-autoscaler  failed to get cpu utilization: missing request for cpu
+  Normal   SuccessfulRescale        24s                       horizontal-pod-autoscaler  New size: 5; reason: cpu resource utilization (percentage of request) above target
 
 
 Name:                                                  udagram-api-user
@@ -28,20 +29,21 @@ Annotations:                                           <none>
 CreationTimestamp:                                     Fri, 09 Sep 2022 10:18:30 -0400
 Reference:                                             Deployment/udagram-api-user
 Metrics:                                               ( current / target )
-  resource cpu on pods  (as a percentage of request):  <unknown> / 70%
+  resource cpu on pods  (as a percentage of request):  200% (500m) / 70%
 Min replicas:                                          3
 Max replicas:                                          5
-Deployment pods:                                       3 current / 3 desired
+Deployment pods:                                       5 current / 5 desired
 Conditions:
-  Type           Status  Reason                   Message
-  ----           ------  ------                   -------
-  AbleToScale    True    SucceededGetScale        the HPA controller was able to get the target's current scale
-  ScalingActive  False   FailedGetResourceMetric  the HPA was unable to compute the replica count: failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API: the server could not find the requested resource (get pods.metrics.k8s.io)
+  Type            Status  Reason            Message
+  ----            ------  ------            -------
+  AbleToScale     True    ReadyForNewScale  recommended size matches current size
+  ScalingActive   True    ValidMetricFound  the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  True    TooManyReplicas   the desired replica count is more than the maximum replica count
 Events:
-  Type     Reason                   Age                      From                       Message
-  ----     ------                   ----                     ----                       -------
-  Warning  FailedGetScale           13m (x21 over 3h12m)     horizontal-pod-autoscaler  deployments/scale.apps "udagram-api-user" not found
-  Warning  FailedGetResourceMetric  3m6s (x1012 over 4h23m)  horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API: the server could not find the requested resource (get pods.metrics.k8s.io)
+  Type     Reason                   Age                       From                       Message
+  ----     ------                   ----                      ----                       -------
+  Warning  FailedGetResourceMetric  5m56s (x1600 over 6h46m)  horizontal-pod-autoscaler  failed to get cpu utilization: missing request for cpu
+  Warning  FailedGetResourceMetric  55s                       horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: no metrics returned from resource metrics API
 
 
 Name:                                                  udagram-frontend
@@ -51,17 +53,17 @@ Annotations:                                           <none>
 CreationTimestamp:                                     Fri, 09 Sep 2022 14:40:59 -0400
 Reference:                                             Deployment/udagram-frontend
 Metrics:                                               ( current / target )
-  resource cpu on pods  (as a percentage of request):  <unknown> / 70%
+  resource cpu on pods  (as a percentage of request):  0% (1m) / 70%
 Min replicas:                                          2
 Max replicas:                                          5
-Deployment pods:                                       2 current / 0 desired
+Deployment pods:                                       2 current / 2 desired
 Conditions:
-  Type           Status  Reason                   Message
-  ----           ------  ------                   -------
-  AbleToScale    True    SucceededGetScale        the HPA controller was able to get the target's current scale
-  ScalingActive  False   FailedGetResourceMetric  the HPA was unable to compute the replica count: failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API: the server could not find the requested resource (get pods.metrics.k8s.io)
+  Type            Status  Reason            Message
+  ----            ------  ------            -------
+  AbleToScale     True    ReadyForNewScale  recommended size matches current size
+  ScalingActive   True    ValidMetricFound  the HPA was able to successfully calculate a replica count from cpu resource utilization (percentage of request)
+  ScalingLimited  True    TooFewReplicas    the desired replica count is less than the minimum replica count
 Events:
-  Type     Reason                        Age               From                       Message
-  ----     ------                        ----              ----                       -------
-  Warning  FailedGetResourceMetric       6s (x4 over 51s)  horizontal-pod-autoscaler  failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API: the server could not find the requested resource (get pods.metrics.k8s.io)
-  Warning  FailedComputeMetricsReplicas  6s (x4 over 51s)  horizontal-pod-autoscaler  invalid metrics (1 invalid out of 1), first error is: failed to get cpu utilization: unable to get metrics for resource cpu: unable to fetch metrics from resource metrics API: the server could not find the requested resource (get pods.metrics.k8s.io)
+  Type     Reason                   Age                       From                       Message
+  ----     ------                   ----                      ----                       -------
+  Warning  FailedGetResourceMetric  3m25s (x1610 over 6h46m)  horizontal-pod-autoscaler  failed to get cpu utilization: missing request for cpu

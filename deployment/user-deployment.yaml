@@ -18,6 +18,11 @@ spec:
         - image: freeleons/udagram-api-user:latest
           name: udagram-api-user
           imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "250m"
+            limits:
+              cpu: "500m"
           ports:
             - containerPort: 8080
           env:
